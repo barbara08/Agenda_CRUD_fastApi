@@ -7,7 +7,7 @@ from pydantic import BaseModel
 # Se anotaria sobre el atributo que lo necesite, en este caso lo pondremos en editorial
 from typing import Optional
 
-#Instanciamos la clase creando un objeto (app)
+#Instanciamos la clase FastAPI creando un objeto (app)
 app = FastAPI()
 
 
@@ -19,12 +19,15 @@ class Libro(BaseModel):
     paginas: int
     editorial: Optional[str]
 
+
 # CREMAOS VARIOS ENDPOINTS
 
     # Creamos función que nos devuelva algo index()
     # Crear la ruta => http://127.0.0.1:8000
     # Poner un decorador => @ para que modificar a la funcion que le sigue, en este caso lo que hace es registrar la función index()
     # Cuando alguien llama a la ruta raiz con la petición get quiere que se ejecute la función 
+    # Hay que levantar el servicio 1º (explicado en las últimas líneas)
+            # uvicorn main:app --reload
 
 # 1º Endpoint que nos devuelva algo
 

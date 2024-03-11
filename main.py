@@ -4,21 +4,23 @@ from typing import Optional
 
 app = FastAPI()
 
-class Libro(BaseModel):
-    titulo: str
-    autor: str
-    paginas: int
-    editorial: Optional[str]
+class Contacto(BaseModel):
+    nombre: str
+    telefono: int
+    categoria: str
+
+contactos = [
+    Contacto(nombre="Ana",telefono="1232",categoria="Categ"),
+    Contacto(nombre="Pepe",telefono="1232",categoria="Categ"),
+]
+
+@app.post('/')
+def insertar_contacto(contacto: Contacto):
+    return {"mensaje": f"contacto {contacto.nombre} insertado correctamente"}
 
 @app.get('/')
-def index():
-    return "hola que tal"
+def mostrar_contacto():
+    # Búsqueda:   pydantic => serializacion => model_dump
+    return [x.model_dump() for x in contactos]
 
-@app.get('/libros/{id}')
-def mostrar_libro(id: int):       
-    return {"data": id}   
-
-@app.post('/libros')
-def insertar_libro(libro: Libro):
-    return {"mensaje": f"libro {libro.titulo} insertado"}
 
