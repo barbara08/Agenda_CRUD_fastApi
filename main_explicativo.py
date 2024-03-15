@@ -70,7 +70,7 @@ def insertar_libro(libro: Libro):
 
 """
 # Para levantar el sevidor:
-    COMANDO
+    # COMANDO
     uvicorn main:app --reload
 
     main = > nombre archivo principal
@@ -82,4 +82,14 @@ def insertar_libro(libro: Libro):
     copiamos la ruta     http://127.0.0.1:8000   y vamos al navegador
 """
 
+"""
+# Otra forma de levantar el servidor 
 
+# CÓDIGO   ojo=> hay que importar uvicorn
+import uvicorn
+if __name__=="__main__":
+    uvicorn.run("main:app",port=8000,reload=True)
+# En el terminal ejecutar el archivo
+python3 main.py
+
+"""
