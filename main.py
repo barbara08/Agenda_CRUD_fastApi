@@ -5,6 +5,73 @@ import uvicorn
 
 app = FastAPI()
 
+class Contact(BaseModel):
+    name: str
+    telephone: int
+    category: str
+
+all_contact = []
+
+# http://127.0.0.1:8000/docs
+
+@app.post('/')
+def insert_contact(contact: Contact):
+    all_contact.append(contact)
+    print(all_contact)
+    return {"message": f"contact {contact.name} insert correctly"}
+
+@app.get('/')
+def show_contact():
+    print(all_contact)
+    return [x.model_dump() for x in all_contact]
+
+@app.post('/{contact_name}')
+def show_contact_param(contact_name:str):
+    for x in all_contact:
+        if x.name == contact_name:
+            return {"Contact: ": x.name}
+    return {"contact not found"}
+
+@app.delete('/{contact_name}')
+def delete_contact(contact_name):
+    for position, item in enumerate(all_contact):
+        if item.name == contact_name:
+            all_contact.pop(position)
+            return {"contact deleted successfully"}
+    return {"contact not found"}
+
+@app.put('/{contact_name}')
+def update_contact(contact_name, updateContact:Contact):
+    for position, obj in enumerate(all_contact):
+        if obj.name == contact_name:
+            obj.name = updateContact.name
+            obj.telephone = updateContact.telephone
+            obj.category = updateContact.category
+            all_contact[position] = obj
+            return {"contact updated successfully"}
+    return {"contact not found"}
+
+if __name__=="__main__":
+    uvicorn.run("main:app",port=8000,reload=True)
+
+
+
+
+"""
+Para la serielizacion
+contactos = [
+    Contacto(nombre="Ana",telefono="1232",categoria="Categ"),
+    Contacto(nombre="Pepe",telefono="1232",categoria="Categ"),
+    Contacto(nombre="Maria",telefono="1232",categoria="Categ"),
+]
+
+@app.get('/')
+def mostrar_contacto():
+    # Búsqueda:   pydantic => serializacion => model_dump
+    return [x.model_dump() for x in contactos]
+"""
+
+"""
 class Contacto(BaseModel):
     nombre: str
     telefono: int
@@ -50,23 +117,4 @@ def actualizar_contacto(contacto_nombre, updateContact:Contacto ):
             return {"Contacto actualizado correctamente"}
     return {"Contacto no encontrado"}
 
-
-if __name__=="__main__":
-    uvicorn.run("main:app",port=8000,reload=True)
-
-# http://127.0.0.1:8000 
-
-
-"""
-Para la serielizacion
-contactos = [
-    Contacto(nombre="Ana",telefono="1232",categoria="Categ"),
-    Contacto(nombre="Pepe",telefono="1232",categoria="Categ"),
-    Contacto(nombre="Maria",telefono="1232",categoria="Categ"),
-]
-
-@app.get('/')
-def mostrar_contacto():
-    # Búsqueda:   pydantic => serializacion => model_dump
-    return [x.model_dump() for x in contactos]
 """
